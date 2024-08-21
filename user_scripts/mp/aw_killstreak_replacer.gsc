@@ -2,8 +2,24 @@
 #include maps\mp\_utility;
 #include maps\mp\gametypes\_hud_util;
 
-replaceHarrier = ["mp_blackbox", "mp_highrise2", "mp_lair", "mp_levity", "mp_recovery", "mp_sector17"];
-replaceChopper = ["mp_clowntown3", "mp_fracture", "mp_highrise2", "mp_kremlin", "mp_lab2", "mp_torqued", "mp_venus"];
+replaceHarrier = [
+    "mp_blackbox",
+    "mp_highrise2",
+    "mp_lair",
+    "mp_levity",
+    "mp_recovery",
+    "mp_sector17"
+  ];
+replaceChopper = [
+    "mp_clowntown3",
+    "mp_fracture",
+    "mp_highrise2",
+    "mp_kremlin",
+    "mp_lab2",
+    "mp_torqued",
+    "mp_venus",
+    "mp_sector17" // chopper gunner never ends; lasts forever
+  ];
 
 // killstreak kills dvars: https://discord.com/channels/1272500523010097202/1274686157891829815/1274690509805457409
 init() {
