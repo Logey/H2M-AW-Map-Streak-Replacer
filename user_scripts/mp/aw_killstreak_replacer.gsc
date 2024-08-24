@@ -3,111 +3,105 @@
 #include maps\mp\gametypes\_hud_util;
 
 init() {
-  if (!isDefined("aw_replace_streaks")) setDvarIfUninitialized("aw_replace_streaks", 1);
+  setDvarIfUninitialized("aw_replace_streaks", 1);
   enabled = getDvarInt("aw_replace_streaks") == 1;
   if (!enabled) return;
 
-  level.streakReplacements = spawnStruct();
+  setDvarIfUninitialized("aw_replacements_welcome_message", "Due to issues with this map, some streaks may be replaced.");
+  level.awReplacementsMessage = getDvar("aw_replacements_welcome_message");
 
-  // WHAT SHOULD STREAKS BE REPLACED WITH?
-  level.streakReplacements.replacement = [];
-  level.streakReplacements.replacement["radar_mp"]              = "airdrop_marker_mp";
-  level.streakReplacements.replacement["counter_radar_mp"]      = "airdrop_marker_mp";
-  level.streakReplacements.replacement["airdrop_marker_mp"]     = "airdrop_marker_mp";    // * does not get replaced
-  level.streakReplacements.replacement["sentry_mp"]             = "sentry_mp";            // * does not get replaced
-  level.streakReplacements.replacement["predator_mp"]           = "predator_mp";          // * does not get replaced
-  level.streakReplacements.replacement["airstrike_mp"]          = "airstrike_mp";         // * does not get replaced
-  level.streakReplacements.replacement["helicopter_mp"]         = "airstrike_mp";
-  level.streakReplacements.replacement["harrier_airstrike_mp"]  = "airstrike_mp";
-  level.streakReplacements.replacement["pavelow_mp"]            = "stealth_airstrike_mp";
-  level.streakReplacements.replacement["stealth_airstrike_mp"]  = "stealth_airstrike_mp"; // * does not get replaced
-  level.streakReplacements.replacement["chopper_gunner_mp"]     = "stealth_airstrike_mp";
-  level.streakReplacements.replacement["ac130_mp"]              = "stealth_airstrike_mp";
-  level.streakReplacements.replacement["emp_mp"]                = "emp_mp";               // * does not get replaced
-  level.streakReplacements.replacement["nuke_mp"]               = "nuke_mp";              // * does not get replaced
+  setDvarIfUninitialized("aw_replacements_welcome_message_time", 5);
+  level.awReplacementsMessageTime = getDvarInt("aw_replacements_welcome_message_time");
 
-  // HOW MANY KILLS SHOULD THE STREAK BE IF REPLACED?
-  level.streakReplacements.replacementKills = [];
-  level.streakReplacements.replacementKills["radar_mp"]             =  4;
-  level.streakReplacements.replacementKills["counter_radar_mp"]     =  4;
-  level.streakReplacements.replacementKills["airdrop_marker_mp"]    =  4; // * does not get replaced
-  level.streakReplacements.replacementKills["sentry_mp"]            =  5; // * does not get replaced
-  level.streakReplacements.replacementKills["predator_mp"]          =  5; // * does not get replaced
-  level.streakReplacements.replacementKills["airstrike_mp"]         =  6; // * does not get replaced
-  level.streakReplacements.replacementKills["helicopter_mp"]        =  6;
-  level.streakReplacements.replacementKills["harrier_airstrike_mp"] =  6;
-  level.streakReplacements.replacementKills["pavelow_mp"]           =  9;
-  level.streakReplacements.replacementKills["stealth_airstrike_mp"] =  9; // * does not get replaced
-  level.streakReplacements.replacementKills["chopper_gunner_mp"]    =  9;
-  level.streakReplacements.replacementKills["ac130_mp"]             =  9;
-  level.streakReplacements.replacementKills["emp_mp"]               = 15; // * does not get replaced
-  level.streakReplacements.replacementKills["nuke_mp"]              = 25; // * does not get replaced
+  setDvarIfUninitialized("aw_replacements_welcome_message_y_offset", -75);
+  level.awReplacementsMessageYOffset = getDvarInt("aw_replacements_welcome_message_y_offset");
 
-  // HOW MANY KILLS SHOULD THE STREAK BE IF NOT REPLACED?
-  level.streakReplacements.replacementKillsDefault = [];
-  level.streakReplacements.replacementKillsDefault["radar_mp"]                =  3;
-  level.streakReplacements.replacementKillsDefault["counter_radar_mp"]        =  4;
-  level.streakReplacements.replacementKillsDefault["airdrop_marker_mp"]       =  4; // * does not get replaced
-  level.streakReplacements.replacementKillsDefault["sentry_mp"]               =  5; // * does not get replaced
-  level.streakReplacements.replacementKillsDefault["predator_mp"]             =  5; // * does not get replaced
-  level.streakReplacements.replacementKillsDefault["airstrike_mp"]            =  6; // * does not get replaced
-  level.streakReplacements.replacementKillsDefault["helicopter_mp"]           =  7;
-  level.streakReplacements.replacementKillsDefault["harrier_airstrike_mp"]    =  7;
-  level.streakReplacements.replacementKillsDefault["airdrop_mega_marker_mp"]  =  8; // * does not get replaced
-  level.streakReplacements.replacementKillsDefault["pavelow_mp"]              =  9;
-  level.streakReplacements.replacementKillsDefault["stealth_airstrike_mp"]    =  9; // * does not get replaced
-  level.streakReplacements.replacementKillsDefault["chopper_gunner_mp"]       = 11;
-  level.streakReplacements.replacementKillsDefault["ac130_mp"]                = 11;
-  level.streakReplacements.replacementKillsDefault["emp_mp"]                  = 15; // * does not get replaced
-  level.streakReplacements.replacementKillsDefault["nuke_mp"]                 = 25; // * does not get replaced
+  setDvarIfUninitialized("aw_replacements_message_glow_r", 1.0);
+  setDvarIfUninitialized("aw_replacements_message_glow_g", 0.0);
+  setDvarIfUninitialized("aw_replacements_message_glow_b", 0.0);
+  level.awReplacementsMessageGlowRGB = spawnStruct();
+  level.awReplacementsMessageGlowRGB.R = getDvarFloat("aw_replacements_message_glow_r");
+  level.awReplacementsMessageGlowRGB.G = getDvarFloat("aw_replacements_message_glow_g");
+  level.awReplacementsMessageGlowRGB.B = getDvarFloat("aw_replacements_message_glow_b");
 
-  // WHAT MAPS SHOULD STREAKS BE REPLACED ON?
-  level.streakReplacements.replaceOnMap = [];
-  level.streakReplacements.replaceOnMap["mp_clowntown3"]  = ["chopper_gunner_mp", "ac130_mp"];
-  level.streakReplacements.replaceOnMap["mp_blackbox"]    = ["helicopter_mp", "harrier_airstrike_mp", "pavelow_mp"];
-  level.streakReplacements.replaceOnMap["mp_fracture"]    = ["chopper_gunner_mp", "ac130_mp"];
-  level.streakReplacements.replaceOnMap["mp_highrise2"]   = ["helicopter_mp", "harrier_airstrike_mp", "pavelow_mp", "chopper_gunner_mp", "ac130_mp"];
-  level.streakReplacements.replaceOnMap["mp_kremlin"]     = ["chopper_gunner_mp", "ac130_mp"];
-  level.streakReplacements.replaceOnMap["mp_lab2"]        = ["chopper_gunner_mp", "ac130_mp"];
-  level.streakReplacements.replaceOnMap["mp_lair"]        = ["helicopter_mp", "harrier_airstrike_mp", "pavelow_mp"];
-  level.streakReplacements.replaceOnMap["mp_laser2"]      = ["chopper_gunner_mp", "ac130_mp"];
-  level.streakReplacements.replaceOnMap["mp_levity"]      = ["helicopter_mp", "harrier_airstrike_mp", "pavelow_mp"];
-  level.streakReplacements.replaceOnMap["mp_recovery"]    = ["helicopter_mp", "harrier_airstrike_mp", "pavelow_mp"];
-  level.streakReplacements.replaceOnMap["mp_sector17"]    = ["helicopter_mp", "harrier_airstrike_mp", "pavelow_mp", "chopper_gunner_mp", "ac130_mp"];
-  level.streakReplacements.replaceOnMap["mp_torqued"]     = ["radar_mp", "counter_radar_mp", "chopper_gunner_mp", "ac130_mp"];
-  level.streakReplacements.replaceOnMap["mp_venus"]       = ["chopper_gunner_mp", "ac130_mp"];
+  setDvarIfUninitialized("aw_replacements_streak_message_time", 3);
+  level.awReplacementsStreakMessageTime = getDvarInt("aw_replacements_streak_message_time");
 
+  setDvarIfUninitialized("aw_replacements_streak_message_y_offset", -100);
+  level.awReplacementsStreakMessageYOffset = getDvarInt("aw_replacements_streak_message_y_offset");
 
+  setDvarIfUninitialized("aw_replacements",
+    "mp_clowntown3;chopper_gunner_mp;stealth_airstrike_mp "+
+    "mp_clowntown3;ac130_mp;stealth_airstrike_mp "+
+    "mp_blackbox;helicopter_mp;airstrike_mp "+
+    "mp_blackbox;harrier_airstrike_mp;airstrike_mp "+
+    "mp_blackbox;pavelow_mp;airstrike_mp "+
+    "mp_blackbox;chopper_gunner_mp;ac130_mp "+ // chopper gunner lasts forever but ac130 works fine
+    "mp_fracture;chopper_gunner_mp;stealth_airstrike_mp "+
+    "mp_fracture;ac130_mp;stealth_airstrike_mp "+
+    "mp_highrise2;helicopter_mp;airstrike_mp "+
+    "mp_highrise2;harrier_airstrike_mp;airstrike_mp "+
+    "mp_highrise2;pavelow_mp;airstrike_mp "+
+    "mp_highrise2;chopper_gunner_mp;stealth_airstrike_mp "+
+    "mp_highrise2;ac130_mp;stealth_airstrike_mp "+
+    "mp_kremlin;chopper_gunner_mp;stealth_airstrike_mp "+
+    "mp_kremlin;ac130_mp;stealth_airstrike_mp "+
+    "mp_lab2;chopper_gunner_mp;stealth_airstrike_mp "+
+    "mp_lab2;ac130_mp;stealth_airstrike_mp "+
+    "mp_lair;helicopter_mp;airstrike_mp "+
+    "mp_lair;harrier_airstrike_mp;airstrike_mp "+
+    "mp_lair;pavelow_mp;airstrike_mp "+
+    "mp_laser2;chopper_gunner_mp;stealth_airstrike_mp "+ // chopper gunner lasts forever
+    "mp_laser2;ac130_mp;stealth_airstrike_mp "+ // needs testing as ac130 may work fine like it does on mp_blackbox
+    "mp_levity;helicopter_mp;airstrike_mp "+
+    "mp_levity;harrier_airstrike_mp;airstrike_mp "+
+    "mp_levity;pavelow_mp;airstrike_mp "+
+    "mp_recovery;helicopter_mp;airstrike_mp "+
+    "mp_recovery;harrier_airstrike_mp;airstrike_mp "+
+    "mp_recovery;pavelow_mp;airstrike_mp "+
+    "mp_sector17;helicopter_mp;airstrike_mp "+
+    "mp_sector17;harrier_airstrike_mp;airstrike_mp "+
+    "mp_sector17;pavelow_mp;airstrike_mp "+
+    "mp_sector17;chopper_gunner_mp;stealth_airstrike_mp "+ // chopper gunner lasts forever
+    "mp_sector17;ac130_mp;stealth_airstrike_mp "+ // needs testing as ac130 may work fine like it does on mp_blackbox
+    "mp_torqued;radar_mp;airdrop_marker_mp "+ // using uav on this map breaks uav on all future maps until server restart
+    "mp_torqued;counter_radar_mp;airdrop_marker_mp "+ // replacing just in case it does the same as uav; but untested
+    "mp_torqued;chopper_gunner_mp;stealth_airstrike_mp "+
+    "mp_torqued;ac130_mp;stealth_airstrike_mp "+
+    "mp_venus;chopper_gunner_mp;stealth_airstrike_mp "+
+    "mp_venus;ac130_mp;stealth_airstrike_mp"
+  );
 
-  level.allStreaks = [
+  level.currentMap = getdvar("mapname");
+  level.streakReplacementsOnMap = [];
+
+  allStreaks = [
     "radar_mp",     "counter_radar_mp",     "airdrop_marker_mp",  "sentry_mp",              "predator_mp",
     "airstrike_mp", "harrier_airstrike_mp", "helicopter_mp",      "airdrop_mega_marker_mp", "stealth_airstrike_mp",
     "pavelow_mp",   "chopper_gunner_mp",    "ac130_mp",           "emp_mp",                 "nuke_mp"
   ];
 
-  level.currentMap = getdvar("mapname");
+  replacementsDvar = getDvar("aw_replacements");
+  replacementsList = strTok(replacementsDvar, " ");
 
-  // set streaks to default or replacement kills
-  for (i = 0; i < level.allStreaks.size; i++) {
-    iStreak = level.allStreaks[i];
+  // replace kills needed for streak
+  for (i = 0; i < allStreaks.size; i++) {
+    iStreak = allStreaks[i];
     streakDvar = getStreakDvar(iStreak);
     // check if needs to be replaced
-    streakKillsReplaced = false;
-    if (isDefined(level.streakReplacements.replaceOnMap[level.currentMap])) {
-      for (j = 0; j < level.streakReplacements.replaceOnMap[level.currentMap].size; j++) {
-        jStreak = level.streakReplacements.replaceOnMap[level.currentMap][j];
-        if (iStreak == jStreak) {
-          streakKills = level.streakReplacements.replacementKills[jStreak];
-          setDvar(streakDvar, streakKills);
-          streakKillsReplaced = true;
-          break;
-        }
-      }
+    streakKills = -1;
+    for (j = 0; j < replacementsList.size; j++) {
+      jReplacement = strTok(replacementsList[j], ";");
+      jMap = jReplacement[0];
+      if (jMap != level.currentMap) continue;
+      jStreak = jReplacement[1];
+      if (jStreak != iStreak) continue;
+      jReplacementStreak = jReplacement[2];
+      streakKills = getStreakKills(jReplacementStreak);
+      level.streakReplacementsOnMap[level.streakReplacementsOnMap.size] = [iStreak, jReplacementStreak];
     }
-    if (!streakKillsReplaced) {
-      streakKills = level.streakReplacements.replacementKillsDefault[iStreak];
-      setDvar(streakDvar, streakKills);
-    }
+    if (streakKills == -1) streakKills = getStreakKills(iStreak);
+    setDvar(streakDvar, streakKills);
   }
 
   level thread onPlayerConnect();
@@ -123,8 +117,12 @@ onPlayerConnect() {
 
 checkMap() {
   self waittill("spawned_player");
-  if (isDefined(level.streakReplacements.replaceOnMap[level.currentMap]) && level.streakReplacements.replaceOnMap[level.currentMap].size > 0) {
-    self thread showMessage("Due to issues with this map, some streaks may be replaced.", -75, 5);
+  if (isDefined(level.streakReplacementsOnMap) && level.streakReplacementsOnMap.size > 0) {
+    self thread showMessage(
+      level.awReplacementsMessage,
+      level.awReplacementsMessageYOffset,
+      level.awReplacementsMessageTime
+    );
   }
 }
 
@@ -166,19 +164,61 @@ getStreakDvar(streak) {
   }
 }
 
+getStreakKills(streak) {
+  switch (streak) {
+    case "radar_mp":
+      return 3;
+    case "counter_radar_mp":
+      return 4;
+    case "airdrop_marker_mp":
+      return 4;
+    case "sentry_mp":
+      return 5;
+    case "predator_mp":
+      return 5;
+    case "airstrike_mp":
+      return 6;
+    case "helicopter_mp":
+      return 7;
+    case "harrier_airstrike_mp":
+      return 7;
+    case "airdrop_mega_marker_mp":
+      return 8;
+    case "pavelow_mp":
+      return 9;
+    case "stealth_airstrike_mp":
+      return 9;
+    case "chopper_gunner_mp":
+      return 11;
+    case "ac130_mp":
+      return 11;
+    case "emp_mp":
+      return 15;
+    case "nuke_mp":
+      return 25;
+    default:
+      return 999;
+  }
+}
+
 // https://github.com/Draakoor/h2m-gscscripts/blob/main/user_scripts/mp/Watermark.gsc
 showMessage(text, vOffset, toWait) {
   info = self createFontString("objective", 0.95);
   info setPoint("CENTER", "CENTER", 0, vOffset);
   info.glowalpha = .6;
-  info.glowcolor = ( 1, 0, 0 );
+  // info.glowcolor = ( 1, 0, 0 );
+  info.glowcolor = (
+    level.awReplacementsMessageGlowRGB.R,
+    level.awReplacementsMessageGlowRGB.G,
+    level.awReplacementsMessageGlowRGB.B
+  );
   info setText(text);
   wait toWait;
   info destroy();
 }
 
 killstreakCheck() {
-  if (!isDefined(level.streakReplacements.replaceOnMap[level.currentMap]) || level.streakReplacements.replaceOnMap[level.currentMap].size < 1) {
+  if (!isDefined(level.streakReplacementsOnMap) || level.streakReplacementsOnMap.size == 0) {
     return;
   }
   while (1) {
@@ -186,10 +226,10 @@ killstreakCheck() {
       if (isDefined(player.pers["killstreaks"]) && player.pers["killstreaks"].size > 0) {
         for (i = 0; i < player.pers["killstreaks"].size; i++) {
           streakName = player.pers["killstreaks"][i].streakName;
-          for (j = 0; j < level.streakReplacements.replaceOnMap[level.currentMap].size; j++) {
-            thisStreak = level.streakReplacements.replaceOnMap[level.currentMap][j];
-            if (streakName == thisStreak) {
-              replacement = level.streakReplacements.replacement[thisStreak];
+          for (j = 0; j < level.streakReplacementsOnMap.size; j++) {
+            jStreak = level.streakReplacementsOnMap[j][0];
+            if (streakName == jStreak) {
+              replacement = level.streakReplacementsOnMap[j][1];
               player replaceKillstreak(i, replacement);
               break;
             }
@@ -246,8 +286,8 @@ replaceKillstreak(el, newStreak) {
     "Your " + streakToDisplayName(streakName) + " has been replaced with " +
       aOrAn(streakToDisplayName(newStreak)[0]) + " " + streakToDisplayName(newStreak) +
       " due to an issue with this map.",
-    -100,
-    3);
+    level.awReplacementsStreakMessageYOffset,
+    level.awReplacementsStreakMessageTime);
   self.pers["killstreaks"][el].streakName = newStreak;
   self SetActionSlot(4, "");
   self giveweapon(newStreak);
