@@ -37,6 +37,7 @@ init() {
     "mp_blackbox;harrier_airstrike_mp;airstrike_mp "+
     "mp_blackbox;pavelow_mp;airstrike_mp "+
     "mp_blackbox;chopper_gunner_mp;ac130_mp "+ // chopper gunner lasts forever but ac130 works fine
+    "mp_dam;chopper_gunner_mp;ac130_mp "+ // chopper gunner lasts forever but ac130 works fine
     "mp_fracture;chopper_gunner_mp;stealth_airstrike_mp "+
     "mp_fracture;ac130_mp;stealth_airstrike_mp "+
     "mp_highrise2;helicopter_mp;airstrike_mp "+
@@ -51,8 +52,7 @@ init() {
     "mp_lair;helicopter_mp;airstrike_mp "+
     "mp_lair;harrier_airstrike_mp;airstrike_mp "+
     "mp_lair;pavelow_mp;airstrike_mp "+
-    "mp_laser2;chopper_gunner_mp;stealth_airstrike_mp "+ // chopper gunner lasts forever
-    "mp_laser2;ac130_mp;stealth_airstrike_mp "+ // needs testing as ac130 may work fine like it does on mp_blackbox
+    "mp_laser2;chopper_gunner_mp;ac130_mp "+ // chopper gunner lasts forever but ac130 works fine
     "mp_levity;helicopter_mp;airstrike_mp "+
     "mp_levity;harrier_airstrike_mp;airstrike_mp "+
     "mp_levity;pavelow_mp;airstrike_mp "+
@@ -62,8 +62,7 @@ init() {
     "mp_sector17;helicopter_mp;airstrike_mp "+
     "mp_sector17;harrier_airstrike_mp;airstrike_mp "+
     "mp_sector17;pavelow_mp;airstrike_mp "+
-    "mp_sector17;chopper_gunner_mp;stealth_airstrike_mp "+ // chopper gunner lasts forever
-    "mp_sector17;ac130_mp;stealth_airstrike_mp "+ // needs testing as ac130 may work fine like it does on mp_blackbox
+    "mp_sector17;chopper_gunner_mp;ac130_mp "+ // chopper gunner lasts forever but ac130 works fine
     "mp_torqued;radar_mp;airdrop_marker_mp "+ // using uav on this map breaks uav on all future maps until server restart
     "mp_torqued;counter_radar_mp;airdrop_marker_mp "+ // replacing just in case it does the same as uav; but untested
     "mp_torqued;chopper_gunner_mp;stealth_airstrike_mp "+
